@@ -94,16 +94,20 @@ export default function MainProjectPage() {
   const handleEditScript = (id) => {
     const script = scripts.find((s) => s._id === id);
     if (script) {
+      const projectId = searchParams.get("id"); // Get projectId from current page
       navigate(`/edit_transcript`, {
         state: {
           fileId: id,
           name: script.name,
           content: script.transcript,
           type: script.type,
+          projectId: projectId, // Pass projectId in state
         },
+        search: `?projectId=${encodeURIComponent(projectId)}`, // Optional: also in query params for fallback
       });
     }
   };
+  
 
   const handleAddScript = () => {
     setIsScriptModalOpen(true);

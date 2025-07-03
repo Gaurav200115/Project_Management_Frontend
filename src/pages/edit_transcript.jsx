@@ -13,9 +13,9 @@ export default function EditTranscriptPage() {
   const location = useLocation();
 
   // Get file data and projectId from location state and search params
-  const { fileId, name, content, type } = location.state || {};
-  const projectId = new URLSearchParams(location.search).get("projectId") || "";
-
+  const { fileId, name, content, type, projectId: stateProjectId } = location.state || {};
+  const projectId = stateProjectId || new URLSearchParams(location.search).get("projectId") || "";
+  console.log("projectId", projectId);
   const [fileData, setFileData] = useState({
     name: name || "THE SIDEPOD S2 EPISODE 15",
     transcript: content || "This is the transcript content for the podcast episode...",
@@ -66,7 +66,10 @@ export default function EditTranscriptPage() {
 
       console.log("response", response);
       if (response.data.success) {
-        navigate(`/main_project?id=${projectId}&name=${encodeURIComponent(fileData.name)}`)
+        console.log("projectId", projectId);
+        navigate(`/main_project?id=${projectId}&name=${encodeURIComponent(fileData.name)}`, {
+          replace: true,
+        });
       } else {
         throw new Error(response.data.message || "Failed to save transcript");
       }
@@ -74,9 +77,9 @@ export default function EditTranscriptPage() {
       console.error("Failed to save transcript:", error);
       setError(
         error.response?.data?.message ||
-          (error.code === "ECONNABORTED"
-            ? "Request timed out. Please try again."
-            : "Failed to save transcript. Please check your connection.")
+        (error.code === "ECONNABORTED"
+          ? "Request timed out. Please try again."
+          : "Failed to save transcript. Please check your connection.")
       );
     } finally {
       setIsSaving(false);
@@ -173,7 +176,7 @@ export default function EditTranscriptPage() {
                   value={fileData.transcript}
                   onChange={(e) => handleInputChange("transcript", e.target.value)}
                   placeholder="Enter or edit transcript content"
-                  className="w-full"
+                  className="w-full h-32"
                 />
               </CardContent>
             </Card>
