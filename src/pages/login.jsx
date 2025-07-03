@@ -350,15 +350,6 @@ export default function Auth() {
               </button>
             </p>
           </div>
-
-          {/* Demo Credentials (login only) */}
-          {isLogin && (
-            <div className="w-full text-center text-xs text-gray-500 mt-4 p-2 bg-gray-50 rounded">
-              <p className="font-medium">Demo Credentials:</p>
-              <p>Email: demo@questai.com</p>
-              <p>Password: password</p>
-            </div>
-          )}
         </Card>
       </div>
     </div>
